@@ -1,0 +1,6 @@
+framework module GithubSearch {
+  umbrella header "GithubSearch-umbrella.h"
+
+  export *
+  module * { export * }
+}

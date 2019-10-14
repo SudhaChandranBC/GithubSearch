@@ -10,6 +10,8 @@
 		A67599F823548046002D5FC8 /* GithubSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67599EE23548046002D5FC8 /* GithubSearch.framework */; };
 		A67599FD23548046002D5FC8 /* GithubSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67599FC23548046002D5FC8 /* GithubSearchTests.swift */; };
 		A67599FF23548046002D5FC8 /* GithubSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = A67599F123548046002D5FC8 /* GithubSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6759A0923548058002D5FC8 /* GithubSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6759A0823548058002D5FC8 /* GithubSearch.swift */; };
+		A6759A6323548808002D5FC8 /* Example in Resources */ = {isa = PBXBuildFile; fileRef = A6759A6223548808002D5FC8 /* Example */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		A67599F723548046002D5FC8 /* GithubSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GithubSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67599FC23548046002D5FC8 /* GithubSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearchTests.swift; sourceTree = "<group>"; };
 		A67599FE23548046002D5FC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6759A0823548058002D5FC8 /* GithubSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubSearch.swift; sourceTree = "<group>"; };
+		A6759A6223548808002D5FC8 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 				A67599F023548046002D5FC8 /* GithubSearch */,
 				A67599FB23548046002D5FC8 /* GithubSearchTests */,
 				A67599EF23548046002D5FC8 /* Products */,
+				A6759A6223548808002D5FC8 /* Example */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				A67599F123548046002D5FC8 /* GithubSearch.h */,
+				A6759A0823548058002D5FC8 /* GithubSearch.swift */,
 				A67599F223548046002D5FC8 /* Info.plist */,
 			);
 			path = GithubSearch;
@@ -148,6 +154,7 @@
 				TargetAttributes = {
 					A67599ED23548046002D5FC8 = {
 						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
 					};
 					A67599F623548046002D5FC8 = {
 						CreatedOnToolsVersion = 10.3;
@@ -160,6 +167,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = A67599E423548046002D5FC8;
 			productRefGroup = A67599EF23548046002D5FC8 /* Products */;
@@ -177,6 +185,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6759A6323548808002D5FC8 /* Example in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6759A0923548058002D5FC8 /* GithubSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +351,7 @@
 		A6759A0323548046002D5FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +369,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.GithubSearch;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +378,7 @@
 		A6759A0423548046002D5FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -391,6 +404,7 @@
 		A6759A0623548046002D5FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9G63F722Q2;
 				INFOPLIST_FILE = GithubSearchTests/Info.plist;
@@ -409,6 +423,7 @@
 		A6759A0723548046002D5FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9G63F722Q2;
 				INFOPLIST_FILE = GithubSearchTests/Info.plist;
