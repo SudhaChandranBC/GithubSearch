@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: Repository Models
 struct RepositoriesResponse: Decodable {
-    let total_count: Int?
+    let total_count: Int
     let incompleteResults : Bool?
     let items: [Repository]?
 }
@@ -52,13 +52,27 @@ struct GithubSearchEndpoint {
     }
 }
 
+public struct SearchOption {
+    public var query: String?
+    public var organisation: String?
+    
+}
+
 public class GithubSearch {
 
-    private var session: URLSession
+    var session: URLSession
     
     init(session: URLSession = .shared) {
         self.session = session
     }
+    
+    public enum APIError: Error {
+        case apiError
+        case invalidEndpoint
+        case noData
+        case decodeError
+    }
+    
     
     /**
      Fetches repositories for a query or organization
@@ -66,36 +80,36 @@ public class GithubSearch {
      - parameter org: The organization that owns the repositories.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func searchRepositories(matching query: String,
-                            filterBy org: String,
-                            completion: @escaping ((RepositoriesResponse?, Error?) -> Swift.Void)) {
-
-        guard let url = GithubSearchEndpoint.search(matching: query, filterBy: org).url else {return}
+    func search(matching query: String,
+                  filterBy org: String,
+                  completion: @escaping (Result<[Repository], APIError>) -> ()) {
         
-        let task = session.dataTask(with: url) {
-            data, response, error in
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(nil, error)
+        guard let url = GithubSearchEndpoint.search(matching: query, filterBy: org).url else {
+            completion(.failure(.invalidEndpoint))
+            return
+        }
+
+        session.dataTask(with: url) { (data, _, err) in
+            if let data = data {
+                do {
+                    let response = try JSONDecoder().decode(RepositoriesResponse.self, from: data)
+                    if let repositories = response.items {
+                        repositories.forEach({ (repository) in
+                            guard let descr = repository.description else {return}
+                            print("->\(descr)")
+                        })
+                        completion(.success(repositories))
+                    } else {
+                        completion(.failure(.noData))
+                    }
+                } catch {
+                    completion(.failure(.decodeError))
                 }
+            } else {
+                completion(.failure(.apiError))
                 return
             }
-            do {
-                let repo = try JSONDecoder().decode(RepositoriesResponse.self, from: data)
-                repo.items?.forEach { repo in
-                    guard let descr = repo.description else {return}
-                    print("->\(descr)")
-                }
-                DispatchQueue.main.async {
-                    completion(repo, nil)
-                }
-            } catch let jsonErr {
-                DispatchQueue.main.async {
-                    completion(nil, jsonErr)
-                }
-            }
-        }
-        
-        task.resume()
+        }.resume()
     }
+
 }
