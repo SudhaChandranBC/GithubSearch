@@ -8,14 +8,82 @@
 
 import Foundation
 
-public class GithubSearch {
+struct RepositoriesResponse: Decodable {
+    let total_count: Int?
+    let incompleteResults : Bool?
+    let items: [Repository]?
+}
+
+struct Repository: Decodable {
+    let name: String?
+    let `private`: Bool
+    let language: String?
+    let description: String?
+}
+
+struct GithubSearchEndpoint {
+    let queryItems: [URLQueryItem]
+    let path = "/search/repositories"
     
-    let name = "GithubSearch"
-    
-    public init() {}
-    
-    public func getRepositories(a: Int, b: Int) -> Int {
-        return a + b
+    var url: URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.github.com"
+        components.path = path
+        components.queryItems = queryItems
+        
+        return components.url
     }
     
+    static func search(matching query: String,
+                       filterBy org: String) -> GithubSearchEndpoint {
+        return GithubSearchEndpoint(
+            queryItems: [
+                URLQueryItem(name: "q", value: query),
+                URLQueryItem(name: "org", value: org)
+            ]
+        )
+    }
+}
+
+public class GithubSearch {
+
+    private var session: URLSession
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+    
+    func searchRepositories(matching query: String,
+                            filterBy org: String,
+                            completion: @escaping ((RepositoriesResponse?, Error?) -> Swift.Void)) {
+
+        guard let url = GithubSearchEndpoint.search(matching: query, filterBy: org).url else {return}
+        
+        let task = session.dataTask(with: url) {
+            data, response, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            do {
+                let repo = try JSONDecoder().decode(RepositoriesResponse.self, from: data)
+                repo.items?.forEach { repo in
+                    guard let descr = repo.description else {return}
+                    print("->\(descr)")
+                }
+                DispatchQueue.main.async {
+                    completion(repo, nil)
+                }
+            } catch let jsonErr {
+                DispatchQueue.main.async {
+                    completion(nil, jsonErr)
+                }
+            }
+        }
+        
+        task.resume()
+    }
 }
