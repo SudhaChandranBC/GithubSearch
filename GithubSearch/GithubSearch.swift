@@ -8,6 +8,7 @@
 
 import Foundation
 
+// MARK: Repository Models
 struct RepositoriesResponse: Decodable {
     let total_count: Int?
     let incompleteResults : Bool?
@@ -21,6 +22,7 @@ struct Repository: Decodable {
     let description: String?
 }
 
+// MARK: Search Endpoint Model
 struct GithubSearchEndpoint {
     let queryItems: [URLQueryItem]
     let path = "/search/repositories"
@@ -34,7 +36,11 @@ struct GithubSearchEndpoint {
         
         return components.url
     }
-    
+    /**
+     Creates an endpoint for search with a query or organization
+     - parameter query: The string for finding repository.
+     - parameter org: The organization that owns the repositories.
+     */
     static func search(matching query: String,
                        filterBy org: String) -> GithubSearchEndpoint {
         return GithubSearchEndpoint(
@@ -54,6 +60,12 @@ public class GithubSearch {
         self.session = session
     }
     
+    /**
+     Fetches repositories for a query or organization
+     - parameter query: The string for finding repository.
+     - parameter org: The organization that owns the repositories.
+     - parameter completion: Callback for the outcome of the fetch.
+     */
     func searchRepositories(matching query: String,
                             filterBy org: String,
                             completion: @escaping ((RepositoriesResponse?, Error?) -> Swift.Void)) {
